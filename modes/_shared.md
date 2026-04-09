@@ -1,0 +1,103 @@
+# System Context -- poetry-ops
+
+<!-- ============================================================
+     THIS FILE IS AUTO-UPDATABLE. Don't put personal data here.
+
+     Your customizations go in modes/_profile.md (never auto-updated).
+     This file contains system rules, scoring logic, and tool config
+     that improve with each poetry-ops release.
+     ============================================================ -->
+
+## Sources of Truth
+
+| File | Path | When |
+|------|------|------|
+| profile.yml | `config/profile.yml` | ALWAYS (poet identity and preferences) |
+| _profile.md | `modes/_profile.md` | ALWAYS (style identity, themes, aesthetic) |
+
+**RULE: NEVER fabricate poem content or publication credits.** Read poems from the poet's website or local files.
+**RULE: Read _profile.md AFTER this file. User customizations in _profile.md override defaults here.**
+
+---
+
+## Scoring System -- 10-Dimension Fit Score
+
+Each poem-journal pair is scored across 10 dimensions on a 1-10 scale. The global score is a weighted average.
+
+| # | Dimension | Weight | What it measures |
+|---|-----------|--------|-----------------|
+| 1 | **Form/Style Match** | 15% | Does the journal publish this form? (free verse, formal, prose poetry, experimental, hybrid) |
+| 2 | **Thematic Alignment** | 15% | Do the poem's themes match the journal's editorial focus and recent issues? |
+| 3 | **Length Fit** | 5% | Is the poem within the journal's word/line/page count limits? |
+| 4 | **Tone Match** | 10% | Does the poem's register (literary, accessible, avant-garde, confessional, political) match? |
+| 5 | **Aesthetic Alignment** | 15% | Based on sample poems in recent issues -- does the poem's sensibility fit? |
+| 6 | **Credits Match** | 10% | Does the poet's publication history match the journal's prestige tier? |
+| 7 | **Sim-Sub Policy** | 5% | Does the journal allow simultaneous submissions? (respects poet's preferences) |
+| 8 | **Response Time** | 5% | Average days to response vs poet's max_response_days |
+| 9 | **Payment/Prestige** | 10% | Contributor copies, payment, exposure, reputation value |
+| 10 | **Genre/Category Fit** | 10% | Poetry subgenre match -- lyric, narrative, prose poem, ekphrastic, documentary, etc. |
+
+**Score interpretation:**
+- 8.0+ --> Strong match, submit with confidence
+- 6.5-7.9 --> Good match, worth submitting
+- 5.0-6.4 --> Decent but not ideal, submit only if specific reason
+- Below 5.0 --> Recommend against submitting (see Ethical Use in CLAUDE.md)
+
+**Per-dimension scoring:**
+- 9-10: Excellent fit, journal actively seeks this
+- 7-8: Good fit, compatible
+- 5-6: Neutral, neither match nor mismatch
+- 3-4: Weak fit, some tension
+- 1-2: Poor fit, contradicts journal's editorial direction
+
+---
+
+## Journal Archetype Detection
+
+Classify every journal into one of these types (or hybrid of 2):
+
+| Archetype | Key signals |
+|-----------|-------------|
+| **Academic/Literary** | University press, MFA faculty on masthead, critical essays alongside poems, formal and experimental accepted |
+| **Avant-Garde/Experimental** | Language poetry, visual poetry, conceptual work, "innovative" in mission, small press |
+| **Mainstream Literary** | Wide readership, established reputation, Best American selections, accessible lyric |
+| **Identity/Community** | Focused on specific identity, diaspora, or community voices, social justice themes |
+| **Online/Emerging** | Web-only, newer publication, open to emerging voices, faster response times |
+| **Chapbook/Book Press** | Publishes chapbooks or full-length collections, contest-based or open reading periods |
+| **Theme/Ekphrastic** | Issues organized by theme, ekphrastic focus, interdisciplinary (art + poetry) |
+
+After detecting archetype, read `modes/_profile.md` for the poet's specific strengths and framing for that journal type.
+
+---
+
+## Global Rules
+
+### NEVER
+
+1. Fabricate poems, credits, or bio details
+2. Submit on behalf of the poet without explicit approval
+3. Recommend submitting poems currently under exclusive review elsewhere
+4. Ignore reading period dates (closed = closed)
+5. Recommend journals with reading fees if poet has `no_reading_fees: true`
+6. Generate a manuscript without reading the poem first
+
+### ALWAYS
+
+1. Read profile.yml and _profile.md before evaluating
+2. Detect journal archetype and adapt evaluation per _profile.md
+3. Verify the journal is currently accepting submissions (Playwright)
+4. Check for simultaneous submission conflicts in submissions.md
+5. Register in tracker after evaluating
+6. Be direct and actionable -- no fluff
+7. Respect the poet's voice -- never suggest changing the poem to fit the journal
+
+### Tools
+
+| Tool | Use |
+|------|-----|
+| WebSearch | Journal research, reading period status, editor info, Duotrope/Submittable data |
+| WebFetch | Fallback for extracting guidelines from static pages |
+| Playwright | Verify submission status (browser_navigate + browser_snapshot). Scrape guidelines. |
+| Read | profile.yml, _profile.md, local poem files |
+| Write | Reports, tracker entries, temporary HTML for manuscript |
+| Bash | `node generate-manuscript.mjs` |

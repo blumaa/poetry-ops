@@ -1,0 +1,53 @@
+# Poetry-Ops Profile Configuration
+# Copy this file to config/profile.yml and fill in your details.
+# This is the single source of truth for your personal data across all modes.
+
+poet:
+  full_name: "Jane Smith"
+  pen_name: ""                        # Leave blank if same as full_name
+  email: "jane@example.com"
+  mailing_address: "123 Main St, City, State ZIP"
+  website: "https://example.com"
+  bio: "Jane Smith is a poet based in City. Her work has appeared in Journal A, Journal B, and Journal C."
+
+  # Source of poems -- website URL with individual poem pages
+  poem_source_url: "https://example-poetry.vercel.app"
+  poem_url_pattern: "/poem/{slug}"    # How individual poems are accessed
+
+credits:
+  # Publication history -- most prestigious first
+  publications:
+    - journal: "Journal Name"
+      poem: "Poem Title"
+      year: 2025
+      issue: "Vol. 12, No. 3"
+    - journal: "Another Journal"
+      poem: "Another Poem"
+      year: 2024
+  # Awards, fellowships, degrees
+  awards: []
+  education:
+    - "MFA in Creative Writing, University (Year)"
+
+preferences:
+  # What you're looking for in a journal
+  target_journals:
+    tiers:
+      - name: "reach"               # Dream journals, low acceptance rate
+        examples: ["Poetry", "The New Yorker", "Ploughshares"]
+      - name: "target"              # Realistic matches, moderate acceptance
+        examples: ["Rattle", "Ninth Letter", "Colorado Review"]
+      - name: "foundation"          # Emerging/online journals, higher acceptance
+        examples: ["Rogue Agent", "Glass: A Journal of Poetry"]
+
+  # Hard constraints
+  no_reading_fees: false             # true = skip journals that charge fees
+  simultaneous_ok: true              # true = only submit to journals allowing sim-sub
+  max_response_days: 180             # Skip journals slower than this
+  genres:
+    - "poetry"                       # poetry, prose poetry, flash fiction, etc.
+
+  # Manuscript preferences
+  manuscript:
+    format: "shunn"                  # shunn = William Shunn's standard format
+    paper_size: "letter"             # letter or a4

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{POEM_TITLE}} - Manuscript</title>
+  <style>
+    @page {
+      size: {{PAGE_SIZE}};
+      margin: 1in;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12pt;
+      line-height: 1;
+      color: #000;
+      background: #fff;
+    }
+
+    /* First page header - poet contact info */
+    .contact-block {
+      text-align: left;
+      line-height: 1.2;
+      margin-bottom: 0;
+    }
+
+    .contact-block p {
+      margin: 0;
+    }
+
+    .line-count {
+      text-align: right;
+      margin-top: -3.6em; /* Pull up to align with contact block */
+      line-height: 1.2;
+    }
+
+    /* Title block - centered, halfway down first page */
+    .title-block {
+      text-align: center;
+      margin-top: 3in;
+      margin-bottom: 2em;
+    }
+
+    .title-block .title {
+      font-size: 12pt;
+      font-weight: normal;
+      text-transform: none;
+    }
+
+    .title-block .byline {
+      margin-top: 0.5em;
+    }
+
+    /* Poem body */
+    .poem-body {
+      margin-top: 2em;
+      text-align: left;
+    }
+
+    .poem-body .line {
+      margin: 0;
+      padding: 0;
+      min-height: 1em;
+    }
+
+    .poem-body .stanza-break {
+      height: 1em;
+    }
+
+    /* Continuation lines (long lines that wrap) get hanging indent */
+    .poem-body .line {
+      padding-left: 0;
+      text-indent: 0;
+    }
+
+    /* Epigraph */
+    .epigraph {
+      font-style: italic;
+      text-align: center;
+      margin-bottom: 2em;
+      font-size: 11pt;
+    }
+
+    /* End marker */
+    .end-marker {
+      text-align: center;
+      margin-top: 2em;
+    }
+
+    /* Running header for subsequent pages */
+    @page {
+      @top-right {
+        content: "{{HEADER_LAST_NAME}} / {{HEADER_TITLE_KEYWORD}}";
+        font-family: "Courier New", Courier, monospace;
+        font-size: 12pt;
+      }
+    }
+
+    /* Hide running header on first page */
+    @page :first {
+      @top-right {
+        content: none;
+      }
+    }
+
+    /* Print-specific */
+    @media print {
+      body {
+        background: white;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- First page header -->
+  <div class="contact-block">
+    <p>{{POET_NAME}}</p>
+    <p>{{POET_ADDRESS}}</p>
+    <p>{{POET_EMAIL}}</p>
+  </div>
+
+  <div class="line-count">
+    <p>{{LINE_COUNT}} lines</p>
+  </div>
+
+  <!-- Title block -->
+  <div class="title-block">
+    <div class="title">{{POEM_TITLE}}</div>
+    <div class="byline">by {{BYLINE_NAME}}</div>
+  </div>
+
+  <!-- Poem body -->
+  <div class="poem-body">
+    {{POEM_BODY}}
+  </div>
+
+  <!-- End marker -->
+  <div class="end-marker">#</div>
+
+</body>
+</html>

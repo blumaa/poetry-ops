@@ -1,0 +1,12 @@
+{
+  "name": "poetry-ops",
+  "version": "1.0.0",
+  "description": "AI-powered poetry submission pipeline built on Claude Code",
+  "type": "module",
+  "scripts": {
+    "manuscript": "node generate-manuscript.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.58.1"
+  }
+}

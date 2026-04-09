@@ -1,0 +1,39 @@
+# Poetry-Ops Profile Configuration
+# Single source of truth for Desmond Blume's poetry submission data.
+
+poet:
+  full_name: "Desmond Blume"
+  pen_name: ""
+  email: "blumaa@gmail.com"
+  mailing_address: ""                 # Fill in for postal submissions
+  website: "https://blumenous-poetry.vercel.app"
+  bio: ""                             # Fill in with your publication bio
+
+  # Source of poems
+  poem_source_url: "https://blumenous-poetry.vercel.app"
+  poem_url_pattern: "/poem/{slug}"
+
+credits:
+  publications: []                    # Add as you publish
+  awards: []
+  education: []
+
+preferences:
+  target_journals:
+    tiers:
+      - name: "reach"
+        examples: []
+      - name: "target"
+        examples: []
+      - name: "foundation"
+        examples: []
+
+  no_reading_fees: false
+  simultaneous_ok: true
+  max_response_days: 180
+  genres:
+    - "poetry"
+
+  manuscript:
+    format: "shunn"
+    paper_size: "letter"
