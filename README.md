@@ -33,43 +33,76 @@ Inspired by [santifer/career-ops](https://github.com/santifer/career-ops), which
                    └─────────────────────┘
 ```
 
-You paste a journal's submission URL. The agent scrapes the guidelines with Playwright, reads your poem, scores the fit across 10 dimensions, drafts a cover letter, and generates a Shunn-formatted manuscript PDF. Everything gets tracked in a markdown table.
+You paste a journal's submission URL. The agent scrapes the guidelines with Playwright, reads your poem, scores the fit across 10 dimensions, drafts a cover letter, generates a submission-ready `.docx`, and can submit directly to Submittable on your behalf. Everything gets tracked in a markdown table.
+
+## What It Can Do
+
+- **Evaluate** journal fit with 10-dimension scoring
+- **Generate** properly formatted manuscripts (`.docx`)
+- **Find** open, free journals that match your style
+- **Submit** directly to Submittable (automated browser submission)
+- **Track** all submissions, responses, and rejections
 
 ## Prerequisites
 
 - [Claude Code](https://claude.ai/code) installed and configured
 - Node.js 18+
-- Playwright (for scraping journal guidelines and PDF generation)
+- [Pandoc](https://pandoc.org/installing.html) (for `.docx` generation)
+- Playwright MCP (for journal verification and automated Submittable submissions)
 
 ## Quick Start
 
 ### 1. Clone and install
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/blumaa/poetry-ops.git
 cd poetry-ops
 npm install
 npx playwright install chromium
 ```
 
-### 2. Configure your profile
+### 2. Verify setup
 
-`config/profile.yml` is pre-populated with defaults. Edit it with your details:
+```bash
+npm run doctor
+```
+
+### 3. Configure your profile
+
+```bash
+cp config/profile.example.yml config/profile.yml
+```
+
+Edit `config/profile.yml` with your details:
 
 ```yaml
 poet:
   full_name: "Your Name"
   email: "you@example.com"
   website: "https://your-poetry-site.com"
-  poem_source_url: "https://your-poetry-site.com"
-  poem_url_pattern: "/poem/{slug}"
 ```
 
-### 3. Define your style identity
+### 4. Add your poems
 
-Edit `modes/_profile.md` with your poetic style, themes, influences, and journal preferences. The more detail here, the better the fit scoring works.
+Create `data/poems.json` with your poems:
 
-### 4. Start using
+```json
+[
+  {
+    "title": "My Poem Title",
+    "slug": "my-poem-title",
+    "text": "first line of the poem\nsecond line\n\nstanza break\nmore lines"
+  }
+]
+```
+
+Or just tell Claude: *"Here are my poems"* and paste them. It will create the file for you.
+
+### 5. Define your style identity
+
+Edit `modes/_profile.md` with your poetic style, themes, influences, and journal preferences. The more detail here, the better the fit scoring works. Or just tell Claude about yourself and it will set this up.
+
+### 6. Start using
 
 ```bash
 claude
@@ -190,6 +223,18 @@ Everything is designed to be customized by the agent. Common requests:
 - *"Add my new publication credit"* -- edit `config/profile.yml`
 - *"I write mostly prose poetry"* -- edit `modes/_profile.md`
 - *"Change the manuscript font"* -- edit `templates/manuscript.html`
+
+## Automated Submittable Submissions
+
+With Playwright MCP configured, the agent can submit directly to journals that use Submittable:
+
+1. It navigates to the journal's Submittable page
+2. Logs in via your Google account (you authenticate once)
+3. Fills the cover letter, uploads the `.docx`, checks required boxes
+4. Unchecks paid add-ons (subscriptions, tips)
+5. Clicks Submit
+
+Just say: *"Find journals and submit for me"* and it handles everything.
 
 ## Ethical Use
 

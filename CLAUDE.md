@@ -30,17 +30,23 @@ AI-powered poetry submission automation built on Claude Code: journal evaluation
 |------|----------|
 | `data/submissions.md` | Submission tracker |
 | `data/pipeline.md` | Inbox of pending journal URLs |
+| `data/poems.json` | Full text of all 170 poems (from Supabase) |
+| `data/poem-catalog.csv` | Poem index: title, slug, form, themes, series, word count |
+| `data/top-1000-lit-mags-2025.csv` | Reference DB: 1,126 ranked lit mags with prestige scores, costs, reading periods |
 | `templates/manuscript.html` | Shunn-format HTML template |
 | `generate-manuscript.mjs` | Playwright: HTML to PDF |
 | `reports/` | Fit evaluation reports (format: `{###}-{journal-slug}-{YYYY-MM-DD}.md`) |
 
 ### Poem Source of Truth
 
-Poems are sourced from the poet's website: https://blumenous-poetry.vercel.app/
+Poems are sourced from the poet's Supabase database (same data as website):
 
-- Individual poems at `/poem/{slug}`
+- **Primary:** `data/poems.json` — full text of all 170 poems, pulled from Supabase
+- **Index:** `data/poem-catalog.csv` — searchable catalog with form, themes, series, word count
+- **Website:** per `config/profile.yml` `poet.poem_source_url` + `poet.poem_url_pattern`
+- **Supabase:** Project `bjtaspwqhorddkjfzgfn` — credentials in blume-poetry `.env.local`. Use to refresh `poems.json` if poems are added/updated.
 - The CLI can also read local markdown files from the working directory
-- **NEVER modify the poet's website or its content**
+- **NEVER modify the poet's database or website content**
 - **NEVER fabricate poem content** -- always read from source
 
 ### Skill Modes
@@ -138,6 +144,9 @@ This system is designed to be customized by YOU (AI Agent). When the user asks y
 
 - Node.js (mjs modules), Playwright (PDF + scraping), YAML (config), HTML/CSS (template), Markdown (data)
 - Scripts in `.mjs`, configuration in YAML
+- Submission documents: always `.docx` by default (via pandoc), `.pdf` only when journal specifically requires it
+- Formatting: ALWAYS preserve original line breaks, stanza spacing, enjambment from poems.json — never reflow
+- Bio/credits: always read from `config/profile.yml` `credits.bio` field — never fabricate
 - Output in `output/` (gitignored), Reports in `reports/`
 - Report numbering: sequential 3-digit zero-padded, max existing + 1
 - **RULE: NEVER create duplicate entries in submissions.md for same poem+journal pair.** Update the existing entry.

@@ -4,11 +4,12 @@ When the poet provides a poem (title, slug, or local file) and a journal (URL or
 
 ## Step 0 -- Gather Inputs
 
-1. **Poem:** Read from website (`https://blumenous-poetry.vercel.app/poem/{slug}`) or local markdown file
+1. **Poem:** Read from `data/poems.json` (by slug or title search), or from the website, or local markdown file
 2. **Journal:** Use Playwright to scrape submission guidelines from the provided URL
    - Navigate to submission/guidelines page
    - Extract: genres accepted, length limits, reading period, response time, payment, sim-sub policy, reading fee, themes/focus, sample work
    - If Submittable link found, navigate there too for additional details
+3. **Reference DB cross-check:** Search `data/top-1000-lit-mags-2025.csv` for the journal by name. If found, note its ranking, total score, cost, reading period, payment, and restrictions. Use this data to supplement scraped info and calibrate prestige scoring (see `_shared.md` for prestige tiers).
 
 ## Step 1 -- Journal Archetype Detection
 
@@ -48,17 +49,17 @@ What doesn't align? For each concern:
 3. Mitigation strategy (e.g., different poem from catalog might fit better)
 
 ### Alternative Poems
-If the score is below 6.5 for this specific poem, suggest 2-3 poems from the poet's catalog that might score higher for this journal. Reference the pinned poems and series from `_profile.md`.
+If the score is below 6.5 for this specific poem, suggest 2-3 poems from the poet's catalog that might score higher for this journal. Use `data/poem-catalog.csv` to filter by matching themes, form, and length, then read full text from `data/poems.json` to confirm fit. Don't just suggest from pinned — search the full 170-poem catalog.
 
 ## Step 4 -- Cover Letter Draft
 
 If score >= 6.5, draft a cover letter:
-- Brief bio (from profile.yml)
+- Use the poet's bio from `config/profile.yml` (`credits.bio` field) — do NOT fabricate or embellish credits
 - Why this poem fits this journal (specific, not generic)
-- Relevant credits (if any)
 - 150 words max
 - No corporate-speak, no gushing flattery
 - Honest and specific
+- Lead with the poet identity, not "programmer" — unless the journal is tech-adjacent
 
 ## Step 5 -- Submission Logistics
 

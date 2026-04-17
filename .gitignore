@@ -1,4 +1,30 @@
-node_modules/
+# === User data (never tracked) ===
+config/profile.yml
+modes/_profile.md
+data/submissions.md
+data/pipeline.md
+data/poems.json
+data/poem-catalog.csv
+data/top-1000-lit-mags-2025.csv
+reports/*.md
 output/
+
+# === Generated / runtime ===
+node_modules/
+package-lock.json
+.playwright-mcp/
 /tmp/
 *.pdf
+
+# === OS artifacts ===
+.DS_Store
+*.png
+*.yml
+!config/profile.example.yml
+!templates/states.yml
+
+# === Claude Code local ===
+.claude/settings.local.json
+.claude/memory/
+hfr-form.yml
+chestnut-review-form.png

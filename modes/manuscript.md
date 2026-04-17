@@ -1,8 +1,27 @@
-# Mode: manuscript -- Shunn-Formatted PDF Generation
+# Mode: manuscript -- Submission Document Generation
 
-## What is Shunn Format
+## Output Formats
 
-William Shunn's standard manuscript format is the industry standard for poetry submissions. Key rules:
+**Default output: .docx** (via pandoc). Most journals accept .docx. Generate .pdf only when a journal specifically requires it.
+
+- **Multi-poem submissions:** One .docx file containing all poems for that journal, separated by page breaks
+- **Blind submissions:** Omit author name/contact from the file entirely (e.g., Rattle)
+- **Standard submissions:** Include author name at top of document
+- **Filename convention:** `{author-name}-{journal-slug}-submission.docx` (or `{journal-slug}-submission.docx` for blind)
+
+## Formatting Rules (CRITICAL)
+
+**ALWAYS preserve the poet's original formatting exactly as it appears in `data/poems.json`:**
+
+- **Line breaks:** Every `\n` in the poem text is an intentional line break. Preserve them.
+- **Stanza breaks:** Consecutive blank lines = stanza break. Preserve spacing.
+- **Enjambment:** Never reflow or rewrap lines. The poet's line breaks ARE the poem.
+- **Indentation/tabs:** Preserve any leading whitespace.
+- **No reformatting:** Do not convert free verse to prose or vice versa.
+
+## Shunn Format (when requested or for formal journals)
+
+William Shunn's standard manuscript format:
 
 - **Font:** 12pt Courier or Courier New (monospaced)
 - **Margins:** 1 inch on all sides
@@ -19,14 +38,14 @@ William Shunn's standard manuscript format is the industry standard for poetry s
 
 ## Pipeline
 
-1. Read poem content (from website URL or local markdown file)
-2. Read `config/profile.yml` for poet details (name, address, email)
+1. Read poem content from `data/poems.json` (by slug). Fallback: website URL or local file.
+2. Read `config/profile.yml` for poet details (name, address, email, bio)
 3. Detect line count and stanza breaks
 4. Check if journal has special formatting requirements (from evaluation report if exists)
-5. Generate HTML using `templates/manuscript.html`
-6. Write HTML to `/tmp/manuscript-{poem-slug}.html`
-7. Execute: `node generate-manuscript.mjs /tmp/manuscript-{poem-slug}.html output/manuscript-{poem-slug}-{YYYY-MM-DD}.pdf --format={letter|a4}`
-8. Report: PDF path, page count, line count
+5. Generate markdown source with preserved line breaks (use `  \n` for markdown line breaks)
+6. Convert to .docx via pandoc: `pandoc source.md -o output.docx`
+7. For PDF (if journal requires): convert .docx to PDF via word processor export, or use `generate-manuscript.mjs` for Shunn format
+8. Report: file path, page count, line count
 
 ## Template Placeholders
 

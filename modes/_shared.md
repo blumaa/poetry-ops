@@ -14,6 +14,9 @@
 |------|------|------|
 | profile.yml | `config/profile.yml` | ALWAYS (poet identity and preferences) |
 | _profile.md | `modes/_profile.md` | ALWAYS (style identity, themes, aesthetic) |
+| poems.json | `data/poems.json` | During evaluation (full poem text lookup by slug) |
+| poem-catalog.csv | `data/poem-catalog.csv` | During evaluation (search/filter poems by theme, form, series, length) |
+| lit-mags-db | `data/top-1000-lit-mags-2025.csv` | During evaluation (cross-reference prestige, cost, restrictions) |
 
 **RULE: NEVER fabricate poem content or publication credits.** Read poems from the poet's website or local files.
 **RULE: Read _profile.md AFTER this file. User customizations in _profile.md override defaults here.**
@@ -98,6 +101,34 @@ After detecting archetype, read `modes/_profile.md` for the poet's specific stre
 | WebSearch | Journal research, reading period status, editor info, Duotrope/Submittable data |
 | WebFetch | Fallback for extracting guidelines from static pages |
 | Playwright | Verify submission status (browser_navigate + browser_snapshot). Scrape guidelines. |
-| Read | profile.yml, _profile.md, local poem files |
+| Read | profile.yml, _profile.md, local poem files, reference database |
 | Write | Reports, tracker entries, temporary HTML for manuscript |
 | Bash | `node generate-manuscript.mjs` |
+
+---
+
+## Reference Database -- Top 1000 Lit Mags
+
+**File:** `data/top-1000-lit-mags-2025.csv`
+
+A ranked database of 1,126 literary magazines from the "Top 1000 Lit Mags 2025" dataset. Rankings are based on fiction/CNF prestige metrics (Best American, Pushcart, O'Henry, Best of the Net, Wigleaf, Best Small Fictions, Best Microfiction, PEN/Dau).
+
+### Columns
+`RANKING, Journal, Best American Short Stories, Best American Essays, Pushcart Fiction, Pushcart Non-Fiction, O'Henry Prize, PEN DAU, Best of the Net Fiction, Best of the Net Non-Fiction, Wigleaf, Best Small Fictions, Best Microfiction, Twitter Followers, Total Score, Open, Cost, Word Count, Print, Payment, Restrictions, Country, Twitter Handle`
+
+### How to Use During Evaluation
+
+1. **Cross-reference:** When evaluating a journal, search the CSV for it by name. If found:
+   - Include its ranking and total score in the report under Payment/Prestige (Dimension 9)
+   - Factor ranking into Credits Match (Dimension 6): top-50 journals expect established poets; 500+ are more open to emerging voices
+   - Note submission cost, reading period, and payment info as corroboration or supplement to what's scraped from the site
+
+2. **Prestige calibration:**
+   - Rank 1-50: **Reach tier** — top-prestige, very competitive, expect prior credits
+   - Rank 51-200: **Upper target** — strong journals, emerging poets with standout work can break in
+   - Rank 201-500: **Target tier** — realistic for emerging poets with polished work
+   - Rank 501+: **Foundation tier** — good for building credits, often more receptive to new voices
+
+3. **Caveat:** Rankings are fiction/CNF-weighted. A journal ranked #800 for fiction may be excellent for poetry. Use ranking as one signal, not the whole picture. Always verify poetry-specific reputation via the journal's actual site and recent issues.
+
+4. **Restrictions filter:** Check the `Restrictions` column. Skip journals marked with identity/demographic restrictions that don't apply, CNF-only, age-restricted, or geographically limited (unless the poet qualifies).
